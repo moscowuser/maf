@@ -10,11 +10,16 @@
             --gold: #D4AF37;
             --gold-dark: #aa8a29;
             --bg-black: #080808;
-            --pomegranate: #4A0404; 
-            --glass: rgba(10, 10, 10, 0.8);
+            --pomegranate: #6e0b0b; 
+            --glass: rgba(10, 10, 10, 0.7);
         }
 
         * { box-sizing: border-box; }
+
+        /* Убираем стандартную мышку только на ПК */
+        @media (pointer: fine) {
+            body, a, button, [contenteditable="true"], .media-content { cursor: none !important; }
+        }
 
         body, html {
             margin: 0; padding: 0;
@@ -25,15 +30,43 @@
             scroll-behavior: smooth;
         }
 
+        /* --- КАСТОМНЫЙ КУРСОР-ПРИЦЕЛ (ПУЛЯ) --- */
+        .custom-cursor {
+            position: fixed; top: 0; left: 0; width: 30px; height: 30px;
+            border: 2px solid var(--gold); border-radius: 50%;
+            transform: translate(-50%, -50%); pointer-events: none; z-index: 10000;
+            transition: width 0.3s, height 0.3s, background 0.3s, transform 0.1s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        /* Линии прицела */
+        .custom-cursor::before, .custom-cursor::after {
+            content: ''; position: absolute; background: var(--gold);
+        }
+        .custom-cursor::before { width: 100%; height: 2px; }
+        .custom-cursor::after { width: 2px; height: 100%; }
+        
+        /* Точка-пуля в центре */
+        .cursor-dot {
+            position: fixed; width: 6px; height: 6px; background: var(--pomegranate);
+            border-radius: 50%; pointer-events: none; z-index: 10001;
+            transform: translate(-50%, -50%); transition: transform 0.1s;
+            box-shadow: 0 0 8px var(--pomegranate);
+        }
+        
+        /* Анимации курсора при наведении */
+        .cursor-hover {
+            width: 50px; height: 50px; background: rgba(212, 175, 55, 0.1);
+            transform: translate(-50%, -50%) rotate(45deg); border-color: var(--pomegranate);
+        }
+        .cursor-click { transform: translate(-50%, -50%) scale(0.5); }
+
         /* АНИМИРОВАННЫЙ ФОН */
         .animated-bg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2;
             background: radial-gradient(circle at center, #111 0%, #000 100%);
         }
         .floating-item {
-            position: absolute;
-            color: rgba(212, 175, 55, 0.08);
-            font-size: 3rem; bottom: -100px;
+            position: absolute; color: rgba(212, 175, 55, 0.08); font-size: 3rem; bottom: -100px;
             animation: floatUp 20s linear infinite;
         }
         @keyframes floatUp {
@@ -42,10 +75,10 @@
             90% { opacity: 1; }
             100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
         }
-        .f1 { left: 15%; animation-duration: 25s; animation-delay: 0s; font-family: sans-serif;} 
-        .f2 { left: 35%; animation-duration: 22s; animation-delay: 5s; } 
-        .f3 { left: 60%; animation-duration: 28s; animation-delay: 2s; font-family: sans-serif;} 
-        .f4 { left: 80%; animation-duration: 20s; animation-delay: 8s; } 
+        .f1 { left: 15%; animation-duration: 25s; font-family: sans-serif;} /* ֍ */
+        .f2 { left: 35%; animation-duration: 22s; animation-delay: 5s; } /* 🎭 */
+        .f3 { left: 60%; animation-duration: 28s; animation-delay: 2s; font-family: sans-serif;} /* ֍ */
+        .f4 { left: 80%; animation-duration: 20s; animation-delay: 8s; } /* ♠️ */
 
         h1, h2, h3 { font-family: 'Cinzel', serif; color: var(--gold); text-align: center; }
 
@@ -55,16 +88,17 @@
             margin: 20px 0; letter-spacing: 5px; opacity: 0.7;
         }
 
-        /* ГЛАВНЫЙ ЭКРАН */
+        /* ГЛАВНЫЙ ЭКРАН (Фон со свечами) */
         .hero {
             height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background: linear-gradient(to bottom, rgba(74, 4, 4, 0.3), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=1920&auto=format&fit=crop') center/cover;
+            /* Фото расплавленных свечей в темноте */
+            background: linear-gradient(to bottom, rgba(74, 4, 4, 0.4), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1615214041724-4dc4a8cd5221?q=80&w=1920&auto=format&fit=crop') center/cover;
             text-align: center; padding: 20px; border-bottom: 2px solid var(--gold-dark);
         }
         .hero-box {
             padding: 40px; background: var(--glass); border: 1px solid var(--gold);
             box-shadow: 0 0 30px rgba(212, 175, 55, 0.2); backdrop-filter: blur(5px);
-            border-radius: 2px;
+            border-radius: 4px;
         }
         .hero h1 { font-size: 3.5rem; margin: 0; letter-spacing: 6px; }
         .hero p { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: #fff; font-style: italic; }
@@ -72,35 +106,34 @@
         .container { max-width: 1100px; margin: 0 auto; padding: 60px 20px; }
 
         /* СЕТКИ */
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-bottom: 80px; }
 
         /* КАРТОЧКИ И МЕДИА */
         .media-card {
-            background-color: #111; border: 1px solid var(--gold-dark);
-            border-radius: 4px; overflow: hidden; position: relative;
+            background-color: #0a0a0a; border: 1px solid var(--gold-dark);
+            border-radius: 8px; overflow: hidden; position: relative;
             box-shadow: 0 10px 20px rgba(0,0,0,0.5); transition: transform 0.3s;
         }
-        .media-card:hover { transform: translateY(-5px); border-color: var(--gold); }
+        .media-card:hover { transform: translateY(-8px); border-color: var(--gold); box-shadow: 0 15px 30px rgba(212,175,55,0.2); }
         
         .media-content {
-            width: 100%; height: 250px; background-size: cover; background-position: center;
-            display: flex; align-items: center; justify-content: center; background-color: #1a1a1a;
+            width: 100%; height: 220px; background-size: cover; background-position: center;
+            display: flex; align-items: center; justify-content: center; background-color: #111;
         }
         .media-content video, .media-content iframe { width: 100%; height: 100%; object-fit: cover; border: none; }
         
-        .media-text { padding: 20px; text-align: center; background: #0a0a0a; border-top: 1px solid rgba(212,175,55,0.3); }
-        .media-text h3 { margin: 0 0 10px 0; font-size: 1.2rem; }
-        .media-text p { font-size: 0.9rem; color: #aaa; margin: 0; }
+        .media-text { padding: 20px; text-align: center; background: #050505; border-top: 1px solid rgba(212,175,55,0.3); }
+        .media-text h3 { margin: 0 0 8px 0; font-size: 1.2rem; text-transform: uppercase; }
+        .media-text p { font-size: 0.9rem; color: #aaa; margin: 0; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; }
 
         /* АДМИНКА */
-        [contenteditable="true"] { outline: none; cursor: text; transition: background 0.3s; }
-        .is-editing [contenteditable="true"]:hover { background: rgba(212, 175, 55, 0.1); border-radius: 4px; }
+        [contenteditable="true"] { outline: none; transition: background 0.3s; }
+        .is-editing [contenteditable="true"]:hover { background: rgba(212, 175, 55, 0.15); border-radius: 4px; }
         
         .edit-overlay {
-            display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.7);
+            display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.8);
             color: var(--gold); align-items: center; justify-content: center;
-            font-family: 'Cinzel', serif; font-size: 1.2rem; cursor: pointer; z-index: 10;
+            font-family: 'Cinzel', serif; font-size: 1.2rem; z-index: 10;
         }
         .is-editing .media-content:hover .edit-overlay { display: flex; }
 
@@ -116,21 +149,36 @@
         .modal-btn {
             display: block; width: 100%; padding: 15px; margin: 10px 0; background: transparent;
             color: var(--gold); border: 1px solid var(--gold); font-family: 'Montserrat', sans-serif;
-            cursor: pointer; font-size: 1rem; transition: 0.3s;
+            font-size: 1rem; transition: 0.3s;
         }
         .modal-btn:hover { background: var(--gold); color: #000; }
 
-        /* АДАПТАЦИЯ */
+        /* АДАПТАЦИЯ ДЛЯ СМАРТФОНОВ (Ряды по 2 блока) */
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.2rem; }
             .hero p { font-size: 1.2rem; }
-            .grid-3, .grid-2 { grid-template-columns: 1fr; gap: 20px; }
-            .hero-box { padding: 20px; width: 90%; }
-            .container { padding: 40px 15px; }
+            .hero-box { padding: 20px; width: 95%; }
+            .container { padding: 40px 10px; }
+            
+            /* Сетка по 2 в ряд на телефоне */
+            .grid { grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 50px; }
+            
+            /* Адаптация размеров внутри блоков для телефона */
+            .media-content { height: 160px; }
+            .media-text { padding: 10px; }
+            .media-text h3 { font-size: 0.9rem; }
+            .media-text p { font-size: 0.85rem; line-height: 1.2; }
+            
+            /* Скрываем кастомный курсор на мобильных */
+            .custom-cursor, .cursor-dot { display: none !important; }
         }
     </style>
 </head>
 <body>
+
+    <!-- Кастомный курсор-прицел (виден только на ПК) -->
+    <div class="custom-cursor" id="cursor"></div>
+    <div class="cursor-dot" id="cursor-dot"></div>
 
     <div class="animated-bg">
         <div class="floating-item f1">֍</div>
@@ -149,72 +197,105 @@
     </section>
 
     <div class="container">
+        
+        <!-- Текст О Нас -->
         <div style="text-align: center; margin-bottom: 60px;">
-            <h2 id="about-title" class="editable">Традиции и Роскошь</h2>
+            <h2 id="about-title" class="editable">Эстетика Теней</h2>
             <div class="armenian-divider" style="font-size: 1rem;">♦ ♦ ֍ ♦ ♦</div>
             <p id="about-text" class="editable" style="font-size: 1.1rem; line-height: 1.8; color: #ccc; max-width: 800px; margin: 0 auto;">
-                Мы соединяем эстетику закрытых клубов Чикаго 30-х годов с современным премиальным отдыхом. Интеллектуальные игры, изысканные вечера, безупречный стиль и тонкий армянский колорит гостеприимства.
+                Огонь свечей, звон бокалов и психология игры. Мы создаем закрытую атмосферу роскоши, где каждый гость становится главным героем ночи. Традиции армянского гостеприимства и строгий стиль Чикаго.
             </p>
         </div>
 
-        <h2 id="services-title" class="editable" style="margin-top: 80px;">Атмосфера Клуба</h2>
-        <div class="armenian-divider" style="font-size: 1rem;">♦ ♦ ֍ ♦ ♦</div>
+        <!-- КАТЕГОРИЯ 1: Услуги -->
+        <h2 id="cat1-title" class="editable" style="margin-top: 60px;">Услуги Клуба</h2>
+        <div class="armenian-divider" style="font-size: 1rem;">֍</div>
         
-        <div class="grid-3" style="margin-top: 40px;">
-            <div class="media-card">
+        <div class="grid">
+            <div class="media-card hover-target">
                 <div class="media-content" id="media-1"><div class="edit-overlay" onclick="openModal('media-1')">Изменить</div></div>
-                <div class="media-text"><h3 id="t1-title" class="editable">Классическая Мафия</h3><p id="t1-desc" class="editable">Профессиональный реквизит и ведущие</p></div>
+                <div class="media-text"><h3 id="t1-title" class="editable hover-target">Мафия</h3><p id="t1-desc" class="editable">Классическая игра с ведущим</p></div>
             </div>
-            <div class="media-card">
+            <div class="media-card hover-target">
                 <div class="media-content" id="media-2"><div class="edit-overlay" onclick="openModal('media-2')">Изменить</div></div>
-                <div class="media-text"><h3 id="t2-title" class="editable">Частные Эвенты</h3><p id="t2-desc" class="editable">Дни рождения и корпоративы под ключ</p></div>
+                <div class="media-text"><h3 id="t2-title" class="editable hover-target">Эвенты</h3><p id="t2-desc" class="editable">Закрытые вечеринки под ключ</p></div>
             </div>
-            <div class="media-card">
+            <div class="media-card hover-target">
                 <div class="media-content" id="media-3"><div class="edit-overlay" onclick="openModal('media-3')">Изменить</div></div>
-                <div class="media-text"><h3 id="t3-title" class="editable">Турниры</h3><p id="t3-desc" class="editable">Борьба за кубок клуба</p></div>
-            </div>
-            <div class="media-card">
-                <div class="media-content" id="media-4"><div class="edit-overlay" onclick="openModal('media-4')">Изменить</div></div>
-                <div class="media-text"><h3 id="t4-title" class="editable">Видеоотчет</h3><p id="t4-desc" class="editable">Гала-ужин в стиле Гэтсби</p></div>
-            </div>
-            <div class="media-card">
-                <div class="media-content" id="media-5"><div class="edit-overlay" onclick="openModal('media-5')">Изменить</div></div>
-                <div class="media-text"><h3 id="t5-title" class="editable">Видеоотчет</h3><p id="t5-desc" class="editable">Закрытая игра для VIP гостей</p></div>
-            </div>
-             <div class="media-card">
-                <div class="media-content" id="media-6"><div class="edit-overlay" onclick="openModal('media-6')">Изменить</div></div>
-                <div class="media-text"><h3 id="t6-title" class="editable">Школа Мафии</h3><p id="t6-desc" class="editable">Обучение искусству лжи и логики</p></div>
+                <div class="media-text"><h3 id="t3-title" class="editable hover-target">Обучение</h3><p id="t3-desc" class="editable">Школа психологии и логики</p></div>
             </div>
         </div>
 
-        <div style="text-align: center; margin-top: 100px; padding-bottom: 50px;">
+        <!-- КАТЕГОРИЯ 2: Видео/Медиа -->
+        <h2 id="cat2-title" class="editable" style="margin-top: 20px;">Кинематограф Ночи</h2>
+        <div class="armenian-divider" style="font-size: 1rem;">֍</div>
+
+        <div class="grid">
+            <div class="media-card hover-target">
+                <div class="media-content" id="media-4"><div class="edit-overlay" onclick="openModal('media-4')">Изменить</div></div>
+                <div class="media-text"><h3 id="t4-title" class="editable hover-target">Гэтсби</h3><p id="t4-desc" class="editable">Отчет с гала-ужина</p></div>
+            </div>
+            <div class="media-card hover-target">
+                <div class="media-content" id="media-5"><div class="edit-overlay" onclick="openModal('media-5')">Изменить</div></div>
+                <div class="media-text"><h3 id="t5-title" class="editable hover-target">Турнир</h3><p id="t5-desc" class="editable">Битва за кубок клуба</p></div>
+            </div>
+             <div class="media-card hover-target">
+                <div class="media-content" id="media-6"><div class="edit-overlay" onclick="openModal('media-6')">Изменить</div></div>
+                <div class="media-text"><h3 id="t6-title" class="editable hover-target">VIP Игра</h3><p id="t6-desc" class="editable">Частное закрытое мероприятие</p></div>
+            </div>
+        </div>
+
+        <!-- Контакты -->
+        <div style="text-align: center; margin-top: 80px; padding-bottom: 50px;">
             <div class="armenian-divider">֍ — ֍ — ֍</div>
-            <h2 id="contacts-title" class="editable">Ваш Пропуск в Клуб</h2>
-            <p id="phone" class="editable" style="font-size: 1.8rem; margin: 20px 0; color: var(--gold);">+7 (XXX) XXX-XX-XX</p>
-            <p id="email" class="editable" style="font-size: 1.2rem;">info@vkus-nochey.ru</p>
+            <h2 id="contacts-title" class="editable hover-target">Ваш Пропуск</h2>
+            <p id="phone" class="editable hover-target" style="font-size: 1.8rem; margin: 20px 0; color: var(--gold);">+7 (XXX) XXX-XX-XX</p>
+            <p id="email" class="editable hover-target" style="font-size: 1.2rem;">info@vkus-nochey.ru</p>
         </div>
     </div>
 
     <!-- Вход админа -->
     <div style="text-align: center; padding: 20px; background: #050505;">
-        <a href="#" id="adminLoginBtn" style="color: #222; text-decoration: none; font-size: 12px;">A-Log</a>
+        <a href="#" id="adminLoginBtn" class="hover-target" style="color: #222; text-decoration: none; font-size: 12px;">A-Log</a>
     </div>
 
+    <!-- Модалка -->
     <div id="uploadModal">
         <div class="modal-box">
             <h3 style="margin-top: 0;">Изменить медиа</h3>
-            <button class="modal-btn" onclick="triggerFileInput()">📁 Загрузить файл (Фото/Видео)</button>
-            <button class="modal-btn" onclick="addYouTube()">🎥 Вставить ссылку YouTube</button>
-            <button class="modal-btn" style="border-color: #555; color: #888;" onclick="closeModal()">Отмена</button>
+            <button class="modal-btn hover-target" onclick="triggerFileInput()">📁 Загрузить файл (Фото)</button>
+            <button class="modal-btn hover-target" onclick="addYouTube()">🎥 Вставить ссылку YouTube</button>
+            <button class="modal-btn hover-target" style="border-color: #555; color: #888;" onclick="closeModal()">Отмена</button>
         </div>
     </div>
 
     <input type="file" id="fileInput" style="display: none;" accept="image/*, video/*">
 
     <script>
+        // --- ЛОГИКА КУРСОРОВ ---
+        const cursor = document.getElementById('cursor');
+        const cursorDot = document.getElementById('cursor-dot');
+        
+        // Движение
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px';
+            cursorDot.style.left = e.clientX + 'px'; cursorDot.style.top = e.clientY + 'px';
+        });
+
+        // Анимация выстрела при клике
+        document.addEventListener('mousedown', () => { cursor.classList.add('cursor-click'); });
+        document.addEventListener('mouseup', () => { cursor.classList.remove('cursor-click'); });
+
+        // Анимация наведения на кнопки/текст
+        document.querySelectorAll('.hover-target, .editable, .media-content, button').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('cursor-hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('cursor-hover'));
+        });
+
+
+        // --- ЛОГИКА АДМИНКИ И СОХРАНЕНИЯ ---
         let currentMediaId = '';
 
-        // ВОССТАНОВЛЕНИЕ ДАННЫХ
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.editable').forEach(el => {
                 const saved = localStorage.getItem(el.id);
@@ -230,19 +311,16 @@
             }
         });
 
-        // ЛОГИН АДМИНА СО СКРЫТЫМ И ЗАШИФРОВАННЫМ ПАРОЛЕМ
+        // Зашифрованный логин
         document.getElementById('adminLoginBtn').addEventListener('click', (e) => {
             e.preventDefault();
             const userInput = prompt("Введите ключ доступа:");
-            
-            // "c2FtdmVsbWFmZ3VydQ==" — это слово "samvelmafguru", зашифрованное в формат Base64.
-            // Теперь в коде нет вашего реального пароля!
             if (userInput && btoa(userInput) === "c2FtdmVsbWFmZ3VydQ==") {
                 document.body.classList.add('is-editing');
                 document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'true'));
-                alert("Режим админа включен. Кликайте на текст для изменения. Наведите на картинку, чтобы загрузить новую.");
+                alert("Режим админа включен.");
             } else {
-                alert("Неверный ключ доступа.");
+                alert("Неверный ключ.");
             }
         });
 
@@ -254,7 +332,6 @@
         document.getElementById('fileInput').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
-            
             const isVideo = file.type.startsWith('video/');
             const reader = new FileReader();
             
@@ -265,9 +342,8 @@
                     localStorage.setItem(currentMediaId + '_content', base64);
                     renderMedia(currentMediaId, base64, isVideo ? 'video' : 'image');
                 } catch (err) {
-                    alert("⚠️ Файл слишком большой для сохранения в памяти браузера. Он будет показан сейчас, но после обновления страницы исчезнет. Для видео используйте YouTube!");
-                    const tempUrl = URL.createObjectURL(file);
-                    renderMedia(currentMediaId, tempUrl, isVideo ? 'video' : 'image');
+                    alert("⚠️ Файл слишком большой для памяти браузера. Используйте YouTube для видео!");
+                    renderMedia(currentMediaId, URL.createObjectURL(file), isVideo ? 'video' : 'image');
                 }
             };
             reader.readAsDataURL(file);
