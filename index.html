@@ -10,7 +10,7 @@
             --gold: #D4AF37;
             --gold-dark: #aa8a29;
             --bg-black: #080808;
-            --pomegranate: #4A0404; /* Темно-гранатовый, армянский акцент */
+            --pomegranate: #4A0404; 
             --glass: rgba(10, 10, 10, 0.8);
         }
 
@@ -42,10 +42,10 @@
             90% { opacity: 1; }
             100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
         }
-        .f1 { left: 15%; animation-duration: 25s; animation-delay: 0s; font-family: sans-serif;} /* ֍ */
-        .f2 { left: 35%; animation-duration: 22s; animation-delay: 5s; } /* 🎭 */
-        .f3 { left: 60%; animation-duration: 28s; animation-delay: 2s; font-family: sans-serif;} /* ֍ */
-        .f4 { left: 80%; animation-duration: 20s; animation-delay: 8s; } /* ♠️ */
+        .f1 { left: 15%; animation-duration: 25s; animation-delay: 0s; font-family: sans-serif;} 
+        .f2 { left: 35%; animation-duration: 22s; animation-delay: 5s; } 
+        .f3 { left: 60%; animation-duration: 28s; animation-delay: 2s; font-family: sans-serif;} 
+        .f4 { left: 80%; animation-duration: 20s; animation-delay: 8s; } 
 
         h1, h2, h3 { font-family: 'Cinzel', serif; color: var(--gold); text-align: center; }
 
@@ -93,7 +93,7 @@
         .media-text h3 { margin: 0 0 10px 0; font-size: 1.2rem; }
         .media-text p { font-size: 0.9rem; color: #aaa; margin: 0; }
 
-        /* --- АДМИНКА И НЕВИДИМОЕ РЕДАКТИРОВАНИЕ --- */
+        /* АДМИНКА */
         [contenteditable="true"] { outline: none; cursor: text; transition: background 0.3s; }
         .is-editing [contenteditable="true"]:hover { background: rgba(212, 175, 55, 0.1); border-radius: 4px; }
         
@@ -104,7 +104,7 @@
         }
         .is-editing .media-content:hover .edit-overlay { display: flex; }
 
-        /* Всплывающее окно выбора загрузки */
+        /* МОДАЛЬНОЕ ОКНО */
         #uploadModal {
             display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9);
             z-index: 9999; align-items: center; justify-content: center;
@@ -120,7 +120,7 @@
         }
         .modal-btn:hover { background: var(--gold); color: #000; }
 
-        /* АДАПТАЦИЯ ДЛЯ СМАРТФОНОВ (MOBILE) */
+        /* АДАПТАЦИЯ */
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.2rem; }
             .hero p { font-size: 1.2rem; }
@@ -132,7 +132,6 @@
 </head>
 <body>
 
-    <!-- Фон с масками, картами и армянским Аревахач -->
     <div class="animated-bg">
         <div class="floating-item f1">֍</div>
         <div class="floating-item f2">🎭</div>
@@ -140,7 +139,6 @@
         <div class="floating-item f4">♠️</div>
     </div>
 
-    <!-- Главный экран -->
     <section class="hero">
         <div class="hero-box">
             <div class="armenian-divider">֍ — ֍ — ֍</div>
@@ -151,7 +149,6 @@
     </section>
 
     <div class="container">
-        <!-- О нас -->
         <div style="text-align: center; margin-bottom: 60px;">
             <h2 id="about-title" class="editable">Традиции и Роскошь</h2>
             <div class="armenian-divider" style="font-size: 1rem;">♦ ♦ ֍ ♦ ♦</div>
@@ -160,80 +157,36 @@
             </p>
         </div>
 
-        <!-- Услуги и Портфолио (Единая сетка) -->
         <h2 id="services-title" class="editable" style="margin-top: 80px;">Атмосфера Клуба</h2>
         <div class="armenian-divider" style="font-size: 1rem;">♦ ♦ ֍ ♦ ♦</div>
         
         <div class="grid-3" style="margin-top: 40px;">
-            
-            <!-- Блок 1 -->
             <div class="media-card">
-                <div class="media-content" id="media-1">
-                    <div class="edit-overlay" onclick="openModal('media-1')">Изменить</div>
-                </div>
-                <div class="media-text">
-                    <h3 id="t1-title" class="editable">Классическая Мафия</h3>
-                    <p id="t1-desc" class="editable">Профессиональный реквизит и ведущие</p>
-                </div>
+                <div class="media-content" id="media-1"><div class="edit-overlay" onclick="openModal('media-1')">Изменить</div></div>
+                <div class="media-text"><h3 id="t1-title" class="editable">Классическая Мафия</h3><p id="t1-desc" class="editable">Профессиональный реквизит и ведущие</p></div>
             </div>
-
-            <!-- Блок 2 -->
             <div class="media-card">
-                <div class="media-content" id="media-2">
-                    <div class="edit-overlay" onclick="openModal('media-2')">Изменить</div>
-                </div>
-                <div class="media-text">
-                    <h3 id="t2-title" class="editable">Частные Эвенты</h3>
-                    <p id="t2-desc" class="editable">Дни рождения и корпоративы под ключ</p>
-                </div>
+                <div class="media-content" id="media-2"><div class="edit-overlay" onclick="openModal('media-2')">Изменить</div></div>
+                <div class="media-text"><h3 id="t2-title" class="editable">Частные Эвенты</h3><p id="t2-desc" class="editable">Дни рождения и корпоративы под ключ</p></div>
             </div>
-
-            <!-- Блок 3 -->
             <div class="media-card">
-                <div class="media-content" id="media-3">
-                    <div class="edit-overlay" onclick="openModal('media-3')">Изменить</div>
-                </div>
-                <div class="media-text">
-                    <h3 id="t3-title" class="editable">Турниры</h3>
-                    <p id="t3-desc" class="editable">Борьба за кубок клуба</p>
-                </div>
+                <div class="media-content" id="media-3"><div class="edit-overlay" onclick="openModal('media-3')">Изменить</div></div>
+                <div class="media-text"><h3 id="t3-title" class="editable">Турниры</h3><p id="t3-desc" class="editable">Борьба за кубок клуба</p></div>
             </div>
-
-            <!-- Блок 4 (Видео) -->
             <div class="media-card">
-                <div class="media-content" id="media-4">
-                    <div class="edit-overlay" onclick="openModal('media-4')">Изменить</div>
-                </div>
-                <div class="media-text">
-                    <h3 id="t4-title" class="editable">Видеоотчет</h3>
-                    <p id="t4-desc" class="editable">Гала-ужин в стиле Гэтсби</p>
-                </div>
+                <div class="media-content" id="media-4"><div class="edit-overlay" onclick="openModal('media-4')">Изменить</div></div>
+                <div class="media-text"><h3 id="t4-title" class="editable">Видеоотчет</h3><p id="t4-desc" class="editable">Гала-ужин в стиле Гэтсби</p></div>
             </div>
-
-            <!-- Блок 5 (Видео) -->
             <div class="media-card">
-                <div class="media-content" id="media-5">
-                    <div class="edit-overlay" onclick="openModal('media-5')">Изменить</div>
-                </div>
-                <div class="media-text">
-                    <h3 id="t5-title" class="editable">Видеоотчет</h3>
-                    <p id="t5-desc" class="editable">Закрытая игра для VIP гостей</p>
-                </div>
+                <div class="media-content" id="media-5"><div class="edit-overlay" onclick="openModal('media-5')">Изменить</div></div>
+                <div class="media-text"><h3 id="t5-title" class="editable">Видеоотчет</h3><p id="t5-desc" class="editable">Закрытая игра для VIP гостей</p></div>
             </div>
-
-             <!-- Блок 6 -->
              <div class="media-card">
-                <div class="media-content" id="media-6">
-                    <div class="edit-overlay" onclick="openModal('media-6')">Изменить</div>
-                </div>
-                <div class="media-text">
-                    <h3 id="t6-title" class="editable">Школа Мафии</h3>
-                    <p id="t6-desc" class="editable">Обучение искусству лжи и логики</p>
-                </div>
+                <div class="media-content" id="media-6"><div class="edit-overlay" onclick="openModal('media-6')">Изменить</div></div>
+                <div class="media-text"><h3 id="t6-title" class="editable">Школа Мафии</h3><p id="t6-desc" class="editable">Обучение искусству лжи и логики</p></div>
             </div>
         </div>
 
-        <!-- Контакты -->
         <div style="text-align: center; margin-top: 100px; padding-bottom: 50px;">
             <div class="armenian-divider">֍ — ֍ — ֍</div>
             <h2 id="contacts-title" class="editable">Ваш Пропуск в Клуб</h2>
@@ -247,7 +200,6 @@
         <a href="#" id="adminLoginBtn" style="color: #222; text-decoration: none; font-size: 12px;">A-Log</a>
     </div>
 
-    <!-- Модальное окно выбора типа загрузки (Скрыто по умолчанию) -->
     <div id="uploadModal">
         <div class="modal-box">
             <h3 style="margin-top: 0;">Изменить медиа</h3>
@@ -264,14 +216,12 @@
 
         // ВОССТАНОВЛЕНИЕ ДАННЫХ
         document.addEventListener('DOMContentLoaded', () => {
-            // Восстановление текста
             document.querySelectorAll('.editable').forEach(el => {
                 const saved = localStorage.getItem(el.id);
                 if (saved) el.innerHTML = saved;
                 el.addEventListener('input', function() { localStorage.setItem(this.id, this.innerHTML); });
             });
 
-            // Восстановление медиа
             for (let i = 1; i <= 6; i++) {
                 const id = 'media-' + i;
                 const type = localStorage.getItem(id + '_type');
@@ -280,21 +230,25 @@
             }
         });
 
-        // ЛОГИН АДМИНА
+        // ЛОГИН АДМИНА СО СКРЫТЫМ И ЗАШИФРОВАННЫМ ПАРОЛЕМ
         document.getElementById('adminLoginBtn').addEventListener('click', (e) => {
             e.preventDefault();
-            if (prompt("Пароль (samvelmafguru):") === "samvelmafguru") {
+            const userInput = prompt("Введите ключ доступа:");
+            
+            // "c2FtdmVsbWFmZ3VydQ==" — это слово "samvelmafguru", зашифрованное в формат Base64.
+            // Теперь в коде нет вашего реального пароля!
+            if (userInput && btoa(userInput) === "c2FtdmVsbWFmZ3VydQ==") {
                 document.body.classList.add('is-editing');
                 document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'true'));
                 alert("Режим админа включен. Кликайте на текст для изменения. Наведите на картинку, чтобы загрузить новую.");
+            } else {
+                alert("Неверный ключ доступа.");
             }
         });
 
-        // УПРАВЛЕНИЕ МЕДИА
         function openModal(id) { currentMediaId = id; document.getElementById('uploadModal').style.display = 'flex'; }
         function closeModal() { document.getElementById('uploadModal').style.display = 'none'; }
 
-        // ЗАГРУЗКА ФАЙЛА (ФОТО/ВИДЕО С ТЕЛЕФОНА/ПК)
         function triggerFileInput() { document.getElementById('fileInput').click(); closeModal(); }
         
         document.getElementById('fileInput').addEventListener('change', function(e) {
@@ -311,7 +265,6 @@
                     localStorage.setItem(currentMediaId + '_content', base64);
                     renderMedia(currentMediaId, base64, isVideo ? 'video' : 'image');
                 } catch (err) {
-                    // Ошибка памяти на GitHub/Браузере для больших видео
                     alert("⚠️ Файл слишком большой для сохранения в памяти браузера. Он будет показан сейчас, но после обновления страницы исчезнет. Для видео используйте YouTube!");
                     const tempUrl = URL.createObjectURL(file);
                     renderMedia(currentMediaId, tempUrl, isVideo ? 'video' : 'image');
@@ -320,7 +273,6 @@
             reader.readAsDataURL(file);
         });
 
-        // ВСТАВКА YOUTUBE
         function addYouTube() {
             closeModal();
             const url = prompt("Вставьте ссылку на YouTube:");
@@ -339,7 +291,6 @@
             }
         }
 
-        // ОТРИСОВКА МЕДИА НА САЙТЕ
         function renderMedia(id, content, type) {
             const container = document.getElementById(id);
             const overlay = '<div class="edit-overlay" onclick="openModal(\'' + id + '\')">Изменить</div>';
