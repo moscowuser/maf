@@ -19,42 +19,56 @@
             body, a, button, [contenteditable="true"], .media-content { cursor: none !important; }
         }
 
+        /* ТЕПЕРЬ BODY ПРОЗРАЧНЫЙ, ЧТОБЫ АНИМАЦИИ БЫЛО ВИДНО НА IPHONE */
         body, html {
             margin: 0; padding: 0; color: #eaeaea;
             font-family: 'Montserrat', sans-serif;
             overflow-x: hidden; scroll-behavior: smooth;
-            background-color: #050505;
+            background-color: transparent; 
         }
 
-        /* --- ФОН СО СВЕЧАМИ И АНИМАЦИИ --- */
-        .fixed-bg {
-            position: fixed; inset: 0; z-index: -3;
-            background: url('https://images.unsplash.com/photo-1615214041724-4dc4a8cd5221?q=80&w=1920&auto=format&fit=crop') center/cover;
-        }
-        .fixed-overlay {
-            position: fixed; inset: 0; z-index: -2;
-            background: linear-gradient(to bottom, rgba(74, 4, 4, 0.4), rgba(0,0,0,0.85));
-        }
-        .animated-bg {
-            position: fixed; inset: 0; z-index: -1; pointer-events: none;
+        /* --- ИДЕАЛЬНАЯ СИСТЕМА ФОНА ДЛЯ ВСЕХ УСТРОЙСТВ --- */
+        .master-background {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -10; pointer-events: none; overflow: hidden;
+            background-color: #050505;
         }
         
+        /* Свечи на заднем плане */
+        .bg-photo {
+            position: absolute; inset: -10px; /* Защита от белых краев при скролле */
+            background: url('https://images.unsplash.com/photo-1615214041724-4dc4a8cd5221?q=80&w=1920&auto=format&fit=crop') center/cover;
+            opacity: 0.8;
+        }
+        
+        /* Затемнение, чтобы текст читался */
+        .bg-gradient {
+            position: absolute; inset: 0;
+            background: linear-gradient(to bottom, rgba(74, 4, 4, 0.4), rgba(5,5,5,0.85));
+        }
+
+        /* Плавающие символы поверх свечей */
         .floating-item {
             position: absolute; font-size: 3.5rem; bottom: -100px;
-            color: rgba(212, 175, 55, 0.35); /* Сделали ярче */
-            text-shadow: 0 0 15px rgba(212, 175, 55, 0.5); /* Добавили свечение */
-            animation: floatUp 20s linear infinite;
+            color: rgba(212, 175, 55, 0.5); /* Сделал ярче! */
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.8); /* Усилил свечение! */
+            animation: floatUp linear infinite;
         }
+        
         @keyframes floatUp {
             0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0; }
             10% { opacity: 1; }
             90% { opacity: 1; }
             100% { transform: translateY(-110vh) rotate(360deg) scale(1.2); opacity: 0; }
         }
-        .f1 { left: 10%; animation-duration: 25s; font-family: sans-serif;} 
-        .f2 { left: 30%; animation-duration: 22s; animation-delay: 5s; } 
-        .f3 { left: 65%; animation-duration: 28s; animation-delay: 2s; font-family: sans-serif;} 
-        .f4 { left: 85%; animation-duration: 20s; animation-delay: 8s; } 
+        
+        /* Настроил тайминги, чтобы постоянно кто-то всплывал */
+        .f1 { left: 10%; animation-duration: 20s; font-family: sans-serif; animation-delay: 0s;} 
+        .f2 { left: 35%; animation-duration: 18s; animation-delay: 5s; } 
+        .f3 { left: 60%; animation-duration: 22s; animation-delay: 2s; font-family: sans-serif;} 
+        .f4 { left: 85%; animation-duration: 15s; animation-delay: 8s; } 
+        .f5 { left: 20%; animation-duration: 25s; animation-delay: 12s; font-family: sans-serif;} 
+        .f6 { left: 75%; animation-duration: 19s; animation-delay: 15s; } 
 
         /* --- КУРСОР --- */
         .custom-cursor {
@@ -82,6 +96,8 @@
         .cursor-click { transform: translate(-50%, -50%) scale(0.5); }
 
         /* --- ТИПОГРАФИКА И БЛОКИ --- */
+        .content-wrapper { position: relative; z-index: 1; }
+
         h1, h2, h3 { font-family: 'Cinzel', serif; color: var(--gold); text-align: center; }
         .armenian-divider { text-align: center; color: var(--gold-dark); font-size: 1.5rem; margin: 20px 0; letter-spacing: 5px; opacity: 0.7; }
 
@@ -102,7 +118,7 @@
         .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-bottom: 30px; }
 
         .media-card {
-            background-color: #0a0a0a; border: 1px solid var(--gold-dark);
+            background-color: rgba(5, 5, 5, 0.85); border: 1px solid var(--gold-dark);
             border-radius: 8px; overflow: hidden; position: relative;
             box-shadow: 0 10px 20px rgba(0,0,0,0.5); transition: transform 0.3s;
         }
@@ -114,7 +130,7 @@
         }
         .media-content video, .media-content iframe { width: 100%; height: 100%; object-fit: cover; border: none; }
         
-        .media-text { padding: 20px; text-align: center; background: #050505; border-top: 1px solid rgba(212,175,55,0.3); }
+        .media-text { padding: 20px; text-align: center; background: rgba(5,5,5,0.9); border-top: 1px solid rgba(212,175,55,0.3); }
         .media-text h3 { margin: 0 0 8px 0; font-size: 1.2rem; text-transform: uppercase; }
         .media-text p { font-size: 0.9rem; color: #aaa; margin: 0; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; }
 
@@ -160,80 +176,83 @@
             .media-text h3 { font-size: 0.9rem; }
             .media-text p { font-size: 0.85rem; line-height: 1.2; }
             .custom-cursor, .cursor-dot { display: none !important; }
-            .floating-item { font-size: 2.5rem; }
+            .floating-item { font-size: 2.8rem; text-shadow: 0 0 10px rgba(212, 175, 55, 1); } /* На телефоне маски виднее */
         }
     </style>
 </head>
 <body>
 
+    <!-- Умный курсор для ПК -->
     <div class="custom-cursor" id="cursor"></div>
     <div class="cursor-dot" id="cursor-dot"></div>
 
-    <div class="fixed-bg"></div>
-    <div class="fixed-overlay"></div>
-    
-    <div class="animated-bg">
+    <!-- Идеальный фон, который теперь 100% видно на iPhone -->
+    <div class="master-background">
+        <div class="bg-photo"></div>
+        <div class="bg-gradient"></div>
+        <!-- Анимации -->
         <div class="floating-item f1">֍</div>
         <div class="floating-item f2">🎭</div>
         <div class="floating-item f3">֍</div>
         <div class="floating-item f4">♠️</div>
+        <div class="floating-item f5">֍</div>
+        <div class="floating-item f6">🎭</div>
     </div>
 
-    <section class="hero">
-        <div class="hero-box">
-            <div class="armenian-divider">֍ — ֍ — ֍</div>
-            <h1 id="hero-title" class="editable hover-target">ВКУС НОЧЕЙ</h1>
-            <p id="hero-subtitle" class="editable hover-target">Элитный Маф Клуб & Эвенты</p>
-            <div class="armenian-divider">֍ — ֍ — ֍</div>
-        </div>
-    </section>
+    <!-- Оболочка контента -->
+    <div class="content-wrapper">
+        <section class="hero">
+            <div class="hero-box">
+                <div class="armenian-divider">֍ — ֍ — ֍</div>
+                <h1 id="hero-title" class="editable hover-target">ВКУС НОЧЕЙ</h1>
+                <p id="hero-subtitle" class="editable hover-target">Элитный Маф Клуб & Эвенты</p>
+                <div class="armenian-divider">֍ — ֍ — ֍</div>
+            </div>
+        </section>
 
-    <div class="container">
-        <div style="text-align: center; margin-bottom: 60px;">
-            <h2 id="about-title" class="editable hover-target">Эстетика Теней</h2>
-            <div class="armenian-divider" style="font-size: 1rem;">♦ ♦ ֍ ♦ ♦</div>
-            <p id="about-text" class="editable hover-target" style="font-size: 1.1rem; line-height: 1.8; color: #ccc; max-width: 800px; margin: 0 auto;">
-                Огонь свечей, звон бокалов и психология игры. Мы создаем закрытую атмосферу роскоши, где каждый гость становится главным героем ночи. Традиции армянского гостеприимства и строгий стиль Чикаго.
-            </p>
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 60px;">
+                <h2 id="about-title" class="editable hover-target">Эстетика Теней</h2>
+                <div class="armenian-divider" style="font-size: 1rem;">♦ ♦ ֍ ♦ ♦</div>
+                <p id="about-text" class="editable hover-target" style="font-size: 1.1rem; line-height: 1.8; color: #ccc; max-width: 800px; margin: 0 auto;">
+                    Огонь свечей, звон бокалов и психология игры. Мы создаем закрытую атмосферу роскоши, где каждый гость становится главным героем ночи. Традиции армянского гостеприимства и строгий стиль Чикаго.
+                </p>
+            </div>
+
+            <!-- КАТЕГОРИЯ 1 -->
+            <h2 id="cat1-title" class="editable hover-target" style="margin-top: 60px;">Услуги Клуба</h2>
+            <div class="armenian-divider" style="font-size: 1rem;">֍</div>
+            
+            <div class="grid" id="grid-1"></div>
+            <div class="admin-controls">
+                <button class="modal-btn hover-target" style="width: auto; display: inline-block;" onclick="addCard('grid-1')">+ Добавить услугу</button>
+            </div>
+
+            <!-- КАТЕГОРИЯ 2 -->
+            <h2 id="cat2-title" class="editable hover-target" style="margin-top: 20px;">Кинематограф Ночи</h2>
+            <div class="armenian-divider" style="font-size: 1rem;">֍</div>
+
+            <div class="grid" id="grid-2"></div>
+            <div class="admin-controls">
+                <button class="modal-btn hover-target" style="width: auto; display: inline-block;" onclick="addCard('grid-2')">+ Добавить фото/видео</button>
+            </div>
+
+            <!-- Контакты -->
+            <div style="text-align: center; margin-top: 80px; padding-bottom: 50px;">
+                <div class="armenian-divider">֍ — ֍ — ֍</div>
+                <h2 id="contacts-title" class="editable hover-target">Ваш Пропуск</h2>
+                <p id="phone" class="editable hover-target" style="font-size: 1.8rem; margin: 20px 0; color: var(--gold);">+7 (XXX) XXX-XX-XX</p>
+                <p id="email" class="editable hover-target" style="font-size: 1.2rem;">info@vkus-nochey.ru</p>
+            </div>
         </div>
 
-        <!-- КАТЕГОРИЯ 1 -->
-        <h2 id="cat1-title" class="editable hover-target" style="margin-top: 60px;">Услуги Клуба</h2>
-        <div class="armenian-divider" style="font-size: 1rem;">֍</div>
-        
-        <div class="grid" id="grid-1">
-            <!-- Сюда будут подгружаться карточки через JavaScript -->
-        </div>
-        <div class="admin-controls">
-            <button class="modal-btn hover-target" style="width: auto; display: inline-block;" onclick="addCard('grid-1')">+ Добавить блок услуг</button>
-        </div>
-
-        <!-- КАТЕГОРИЯ 2 -->
-        <h2 id="cat2-title" class="editable hover-target" style="margin-top: 20px;">Кинематограф Ночи</h2>
-        <div class="armenian-divider" style="font-size: 1rem;">֍</div>
-
-        <div class="grid" id="grid-2">
-             <!-- Сюда будут подгружаться карточки через JavaScript -->
-        </div>
-        <div class="admin-controls">
-            <button class="modal-btn hover-target" style="width: auto; display: inline-block;" onclick="addCard('grid-2')">+ Добавить фото/видео</button>
-        </div>
-
-        <!-- Контакты -->
-        <div style="text-align: center; margin-top: 80px; padding-bottom: 50px;">
-            <div class="armenian-divider">֍ — ֍ — ֍</div>
-            <h2 id="contacts-title" class="editable hover-target">Ваш Пропуск</h2>
-            <p id="phone" class="editable hover-target" style="font-size: 1.8rem; margin: 20px 0; color: var(--gold);">+7 (XXX) XXX-XX-XX</p>
-            <p id="email" class="editable hover-target" style="font-size: 1.2rem;">info@vkus-nochey.ru</p>
+        <!-- Вход админа -->
+        <div style="text-align: center; padding: 20px;">
+            <a href="#" id="adminLoginBtn" class="hover-target" style="color: rgba(255,255,255,0.1); text-decoration: none; font-size: 12px;">A-Log</a>
         </div>
     </div>
 
-    <!-- Вход админа -->
-    <div style="text-align: center; padding: 20px; background: #050505;">
-        <a href="#" id="adminLoginBtn" class="hover-target" style="color: #222; text-decoration: none; font-size: 12px;">A-Log</a>
-    </div>
-
-    <!-- Модалка -->
+    <!-- Модалка загрузки -->
     <div id="uploadModal">
         <div class="modal-box">
             <h3 style="margin-top: 0;">Изменить медиа</h3>
@@ -257,7 +276,6 @@
         document.addEventListener('mousedown', () => cursor.classList.add('cursor-click'));
         document.addEventListener('mouseup', () => cursor.classList.remove('cursor-click'));
 
-        // Авто-определение интерактивных элементов
         document.addEventListener('mouseover', (e) => {
             if (e.target.closest('.hover-target, .editable, .media-content, button')) { cursor.classList.add('cursor-hover'); }
         });
@@ -265,9 +283,7 @@
             if (e.target.closest('.hover-target, .editable, .media-content, button')) { cursor.classList.remove('cursor-hover'); }
         });
 
-
         // --- ЛОГИКА ДИНАМИЧЕСКИХ СЕТОК (БЛОКОВ) ---
-        // Базовые карточки (если сайт загружается первый раз)
         let gridsData = {
             'grid-1': JSON.parse(localStorage.getItem('grid-1')) || [
                 { id: 'm1', title: 'Мафия', desc: 'Классическая игра с ведущим' },
@@ -289,10 +305,9 @@
         function renderAllGrids() {
             for (let gridId in gridsData) {
                 const container = document.getElementById(gridId);
-                container.innerHTML = ''; // Очищаем контейнер
+                container.innerHTML = ''; 
 
                 gridsData[gridId].forEach(item => {
-                    // Создаем HTML карточки
                     container.innerHTML += `
                         <div class="media-card hover-target" id="card-${item.id}">
                             <button class="delete-btn hover-target" onclick="deleteCard('${gridId}', '${item.id}')">❌ Удалить</button>
@@ -307,7 +322,6 @@
                     `;
                 });
 
-                // Восстанавливаем тексты и картинки из памяти
                 gridsData[gridId].forEach(item => {
                     let titleEl = document.getElementById(`t-${item.id}`);
                     let descEl = document.getElementById(`d-${item.id}`);
@@ -325,10 +339,8 @@
             }
         }
 
-        // Запуск при загрузке
         document.addEventListener('DOMContentLoaded', () => {
             renderAllGrids();
-            // Восстановление обычных текстов (Заголовки, контакты)
             document.querySelectorAll('.editable').forEach(el => {
                 if(!el.id.startsWith('t-') && !el.id.startsWith('d-')) {
                     const saved = localStorage.getItem(el.id);
@@ -340,11 +352,10 @@
 
         // --- ЛОГИКА АДМИНКИ (Добавление / Удаление) ---
         function addCard(gridId) {
-            let newId = 'img' + Date.now(); // Уникальный ID
-            gridsData[gridId].push({ id: newId, title: 'Новый заголовок', desc: 'Новое описание' });
+            let newId = 'img' + Date.now(); 
+            gridsData[gridId].push({ id: newId, title: 'Заголовок', desc: 'Описание' });
             saveGrids();
             renderAllGrids();
-            // Если мы в режиме редактирования, сразу делаем новые элементы редактируемыми
             document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'true'));
         }
 
@@ -356,7 +367,6 @@
             document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'true'));
         }
 
-        // Зашифрованный логин
         document.getElementById('adminLoginBtn').addEventListener('click', (e) => {
             e.preventDefault();
             const userInput = prompt("Введите ключ доступа:");
@@ -417,7 +427,7 @@
 
         function renderMediaUI(id, content, type) {
             const container = document.getElementById(id);
-            if(!container) return; // Защита от ошибок
+            if(!container) return; 
             
             const overlay = '<div class="edit-overlay" onclick="openModal(\'' + id + '\')">Изменить</div>';
             
